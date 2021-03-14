@@ -1,0 +1,25 @@
+{
+  "name": "blog-ppt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodeppt serve index.md",
+    "build": "nodeppt build index.md",
+    "deploy": "bash deploy.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xsahxl/blog-ppt.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xsahxl/blog-ppt/issues"
+  },
+  "homepage": "https://github.com/xsahxl/blog-ppt#readme",
+  "dependencies": {
+    "nodeppt": "^2.2.2"
+  }
+}
