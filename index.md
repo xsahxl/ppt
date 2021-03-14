@@ -1,12 +1,12 @@
 title: 如何搭建属于自己的个人网站
 speaker: 史华力
-url: https://github.com/xsahxl/blog-ppt
+url: https://github.com/xsahxl/ppt
 
 <slide  class="bg-black-blue aligncenter" image="https://cn.bing.com/az/hprichbg/rb/RainierDawn_EN-AU3730494945_1920x1080.jpg .dark">
 
 # 如何搭建属于自己的个人网站 {.text-landing.text-shadow}
 
-<div style="margin-top: 32px;">[:fa-github: Github](https://github.com/xsahxl/blog-ppt){.button.ghost.animated.flipInX.delay-500}</div>
+<div style="margin-top: 32px;">[:fa-github: Github](https://github.com/xsahxl/ppt){.button.ghost.animated.flipInX.delay-500}</div>
 
 ### <div style="margin-top: 100px;text-align: right;">分享人：史华力</div>
 
