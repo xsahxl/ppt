@@ -1,89 +1,145 @@
-title: Serverless 入门
+title: 如何搭建属于自己的个人网站
 speaker: 史华力
 url: https://github.com/xsahxl/ppt
 
 <slide  class="bg-black-blue aligncenter" image="https://cn.bing.com/az/hprichbg/rb/RainierDawn_EN-AU3730494945_1920x1080.jpg .dark">
 
-# Serverless 入门
+# 如何搭建属于自己的个人网站 {.text-landing.text-shadow}
 
 <div style="margin-top: 32px;">[:fa-github: Github](https://github.com/xsahxl/ppt){.button.ghost.animated.flipInX.delay-500}</div>
 
 ### <div style="margin-top: 100px;text-align: right;">分享人：史华力</div>
 
-<slide style="padding: 16px;">
-
-# Serverless 简介
-
-<br >
-'Serverless' 直译过来是 '无服务器' 的意思，但并不是真的没有服务器，这里的 '无' 我们要理解为 开发者不在需要关注服务器，只需要关注自己业务代码上的逻辑实现
-
-在传统 Serverful 架构下，部署一个应用需要购买服务器，部署操作系统，搭建开发环境，编写代码，构建应用，部署应用，配置负载均衡机制，搭建日志分析与监控系统，应用上线后，继续监控应用的运行情况。而在 Serverless 架构下，开发者只需要关注应用的开发构建和部署，无需关心服务器相关操作与运维，把精力投入到更有意义的业务开发上。
-
-- 根据 [CNCF 白皮书](https://github.com/cncf/wg-serverless/tree/master/whitepapers/serverless-overview#what-is-serverless-computing) 提到，Serverless 是指构建和运行不需要服务器管理的应用程序的概念。
-
-- 从技术角度来说，Serverless 就是 FaaS 和 BaaS 的结合。
-
 <slide style="padding: 16px">
-# Serverless = FaaS + BaaS
-![image](https://img.alicdn.com/imgextra/i3/O1CN01ehpJdA1pCRM4eH3TS_!!6000000005324-2-tps-1134-404.png)
 
-- FaaS（Function as a Service） 就是一些运行函数的平台，比如阿里云的函数计算、AWS 的 Lambda 等。
-- BaaS（Backend as a Service）则是一些后端云服务，比如云数据库、对象存储、消息队列等。利用 BaaS，可以极大简化我们的应用开发难度。
-- Serverless 则可以理解为运行在 FaaS 中的，使用了 BaaS 的函数。
+### 目录
 
-<slide>
+---
 
-# Serverless 的主要特点
-
-- 事件驱动
-  - 函数在 FaaS 平台中，需要通过一系列的事件来驱动函数执行。
-- 无状态
-  - 因为每次函数执行，可能使用的都是不同的容器，无法进行内存或数据共享。如果要共享数据，则只能通过第三方服务，比如 ots 等。
-- 无运维
-  - 使用 Serverless 我们不需要关心服务器，不需要关心运维。这也是 Serverless 思想的核心。
-- 弹性扩容
-  - 函数计算根据请求量自动进行弹性扩容，无需任何手动配置。
-  - 毫秒级调度计算资源，轻松应对业务洪峰。
-- 低成本
-  - 使用 Serverless 成本很低，因为我们只需要为每次函数的运行付费。函数不运行，则不花钱，也不会浪费服务器资源
+<ol>
+    <li>ui 选型 和 部署方案</li>
+    <li>dumi</li>
+    <li>GitHub Pages</li>
+    <li>cdn加速</li>
+    <li>域名申请</li>
+    <li>云服务器</li>
+    <li>nignx</li>
+    <li>云服务器如何上传文件</li>
+    <li>部署 node 环境</li>
+    <li>mongodb</li>
+    <li>egg 部署</li>
+</ol>
 
 <slide style="padding: 16px">
 
-# Serverless 的缺点
+:::flexblock {.specs}
 
-- 云厂商强绑定
-  - 它们常常会和厂商的其他云产品相绑定，如对象存储、消息队列等，意味你需要同时开通其他的服务，迁移成本高
-- 不适合长时间任务
-  - 云函数平台会限制函数执行时间，如阿里云 Function Compute 最大执行时长为 10 min
-- 冷启动时间
-  - 函数运行时，执行容器和环境需要一定的时间，对 HTTP 请求来讲，可能会带来响应时延的增加
-- 本地调试困难
-  - 开发者需要不断调整代码，打印日志，并提交到函数平台运行测试
+### 静态 ui 选型
 
-<img src="https://img.alicdn.com/imgextra/i3/O1CN01sdBUz81aDc8UWgUum_!!6000000003296-2-tps-797-207.png" width="100%">
+- [hexo](https://hexo.io/zh-cn/)
+- [vuepress](https://vuepress.vuejs.org/zh/)
+- [dumi](https://d.umijs.org/zh-CN)
+
+---
+
+### 部署
+
+- [GitHub Pages](https://pages.github.com/)
+- [云服务器](https://ecs.console.aliyun.com/)
+
+:::
+
+#### <div style="margin-top:32px;">静态网站搭建 以 dumi 和 GitHub Pages 为例子进行演示</div>
+
+#### <div style="margin-top:32px;">动态网站搭建 以 react+axios 和 egg+mongodb 为例子进行演示</div>
+
+<slide  image="https://webslides.tv/static/images/iphone-hand.png .right-bottom">
+
+## [dumi](https://d.umijs.org/)
+
+环境准备
+
+首先得有 node，并确保 node 版本是 10.13 或以上。
+
+```
+node -v
+```
+
+仓库模板初始化
+
+我们也可以使用 dumi-template 仓库进行初始化，访问 [dumi-template ](https://github.com/umijs/dumi-template) 了解更多。
 
 <slide style="padding: 16px">
 
-# 函数计算执行过程
+## [GitHub Pages](https://pages.github.com/)
 
-![image](https://img.alicdn.com/imgextra/i2/O1CN01b5E5Ux1OuPlGKh0xk_!!6000000001765-2-tps-1080-498.png)
+Head over to GitHub and create a new public repository named username.github.io, where username is your username (or organization name) on GitHub.
 
-如上图所示，当函数第一次被调用的时候，函数计算需要动态调度实例、下载代码、解压代码、启动实例，得到一个可执行函数的代码环境。然后才开始在系统分配的实例中真正地执行用户的初始化函数，执行函数业务逻辑。这个调度实例启动实例的过程，就是系统的冷启动过程。
+部署
 
-函数逻辑执行结束后，不会立即释放掉实例，会等一段时间，如果在这段时间内有新的调用，会复用这个实例，比如上图中的 Request 2，由于执行环境已经分配好了，Request 2 可以直接使用，所以 Request 2 就不会遇到冷启动。
+1.在 `.umirc.ts` 中设置正确的 `base`。
 
-Request 2 执行结束后，等待一段时间，如果这段时间没有新的请求分配到这个实例上，那系统会回收实例，释放执行环境。此实例释放后，新的请求 Request 3 来到函数计算，需要重新调度实例、下载代码、解压代码，启动实例，又会遇到冷启动。
+如果你打算发布到 `https://<USERNAME>.github.io/`，则可以省略这一步，因为 `base` 和 `publicPath` 默认即是 `"/"`。
 
-所以，为了减小冷启动带来的影响，要尽可能避免冷启动，降低冷启动带来的延时。
+如果你打算发布到 `https://<USERNAME>.github.io/<REPO>/`（也就是说你的仓库在 `https://github.com/<USERNAME>/<REPO>`），则将 `base` 和 `publicPath` 设置为 `"/<REPO>/"`。
 
 <slide style="padding: 16px">
-![image](https://img.alicdn.com/imgextra/i2/O1CN01B5ooiu24nHSA8ebyj_!!6000000007435-2-tps-1080-506.png)
 
-使用预留实例可以完全避免冷启动，预留实例是在用户预留后就分配实例，准备执行环境；请求结束后系统也不会自动回收实例。
+2.在你的项目中，创建一个如下的 `deploy.sh` 文件（请自行判断去掉高亮行的注释）:
 
-预留实例不由系统自动分配与回收，由用户控制实例的生命周期，可以长驻不销毁，这将彻底消除实例冷启动带来的延时毛刺，提供极致性能，也为在线应用迁移至函数计算扫清障碍。
+```shell {.animated.fadeInUp}
+#!/usr/bin/env sh
 
-如果业务场景不适合使用 [预留实例](https://help.aliyun.com/document_detail/138103.html)，那就要设法降低冷启动的延时，比如降低代码包大小，可以降低下载代码包、解压代码包的时间。Initializer 函数是实例的初始化函数，Initializer 在同一实例中执行且只执行一次，所以可以将一些耗时的公共逻辑放到 Initializer 中，比如在 数据库的连接等。另外要尽量保持请求连续稳定，避免突发的流量，由于系统已启动的实例不足以支撑大量的突发流量，就会带来不可避免的冷启动。
+# 确保脚本抛出遇到的错误
+set -e
+
+# 生成静态文件
+npm run build
+
+# 进入生成的文件夹
+cd docs-dist
+
+# 如果是发布到自定义域名
+# echo 'www.example.com' > CNAME
+
+git init
+git add -A
+git commit -m 'deploy'
+
+# 如果发布到 https://<USERNAME>.github.io
+# git push -f git@github.com:xsahxl/xsahxl.github.io.git master
+
+# 如果发布到 https://<USERNAME>.github.io/<REPO>
+git push -f git@github.com:xsahxl/blog.git master:gh-pages
+
+cd -
+```
+
+<slide style="padding: 16px">
+
+[cdn 加速](https://vercel.com) ：将项目导入进来，会帮我们部署项目，然后生成一个可访问的 url
+
+[域名申请](https://www.freenom.com/zh/index.html?lang=zh)：可参考 [教程](https://zhuanlan.zhihu.com/p/115535965)（免费一年）
+
+[云服务器](https://ecs.console.aliyun.com/) ：如果第一次使用阿里云服务器的话，可以先申请 [免费试用的云服务器](https://free.aliyun.com/)
+
+<slide style="padding: 16px">
+
+## nignx
+
+安装
+
+```
+yum install nginx -y
+```
+
+启动 nginx
+
+```
+nginx
+```
+
+阿里云 ecs 服务器的默认开放端口没有 80,记得在安全组里添加下，然后 访问公网 ip 应该会看到 nginx 启动成功了，显然这时候也可以部署我们的静态博客了。
 
 <slide style="padding: 16px">
 
