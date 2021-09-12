@@ -15,7 +15,7 @@ url: https://github.com/xsahxl/ppt
 # Serverless 简介
 
 <br >
-'Serverless' 直译过来是 '无服务器' 的意思，但并不是真的没有服务器，这里的 '无' 我们要理解为 开发者不在需要关注服务器，只需要关注自己业务代码上的逻辑实现
+'Serverless' 直译过来是 '无服务器' 的意思，但并不是真的没有服务器，这里的 '无' 我们要理解为 开发者不在需要关注服务器的运营和维护工作，只需要关注自己业务代码上的逻辑实现
 
 在传统 Serverful 架构下，部署一个应用需要购买服务器，部署操作系统，搭建开发环境，编写代码，构建应用，部署应用，配置负载均衡机制，搭建日志分析与监控系统，应用上线后，继续监控应用的运行情况。而在 Serverless 架构下，开发者只需要关注应用的开发构建和部署，无需关心服务器相关操作与运维，把精力投入到更有意义的业务开发上。
 
@@ -54,19 +54,29 @@ url: https://github.com/xsahxl/ppt
 - 云厂商强绑定
   - 它们常常会和厂商的其他云产品相绑定，如对象存储、消息队列等，意味你需要同时开通其他的服务，迁移成本高
 - 不适合长时间任务
-  - 云函数平台会限制函数执行时间，如阿里云 Function Compute 最大执行时长为 10 min
+  - 云函数平台会限制函数执行时间
 - 冷启动时间
   - 函数运行时，执行容器和环境需要一定的时间，对 HTTP 请求来讲，可能会带来响应时延的增加
 - 本地调试困难
   - 开发者需要不断调整代码，打印日志，并提交到函数平台运行测试
 
-<img src="https://img.alicdn.com/imgextra/i3/O1CN01sdBUz81aDc8UWgUum_!!6000000003296-2-tps-797-207.png" width="100%">
+<slide style="padding: 16px">
+
+# 函数计算使用场景
+
+从使用场景来说，主要有三类
+
+- Web 应用, 可以是各种语言写的，这种可以是使用 Serverless 框架新编写的程序, 也可以是已有的应用。比如可能是小程序后端，也可能是 Web API
+- 对计算能力有很强的弹性诉求的应用, 比如 AI 推理、音视频处理、图文转换等
+- 事件驱动型的应用, 比如通过其他阿里云产品驱动的场景、Web Hook、定时任务等
+
+函数计算已经与很多产品进行了打通，比如对象存储、表格存储、定时器、CDN、日志服务、云监控等十几个产品，可以非常快速地组装出一些业务逻辑。
 
 <slide style="padding: 16px">
 
-# 函数计算执行过程
+##### 函数计算执行过程
 
-![image](https://img.alicdn.com/imgextra/i2/O1CN01b5E5Ux1OuPlGKh0xk_!!6000000001765-2-tps-1080-498.png)
+![image](./images/C1F82537-8A1B-48A2-BC93-277FD15DC9B1.png)
 
 如上图所示，当函数第一次被调用的时候，函数计算需要动态调度实例、下载代码、解压代码、启动实例，得到一个可执行函数的代码环境。然后才开始在系统分配的实例中真正地执行用户的初始化函数，执行函数业务逻辑。这个调度实例启动实例的过程，就是系统的冷启动过程。
 
@@ -77,7 +87,7 @@ Request 2 执行结束后，等待一段时间，如果这段时间没有新的�
 所以，为了减小冷启动带来的影响，要尽可能避免冷启动，降低冷启动带来的延时。
 
 <slide style="padding: 16px">
-![image](https://img.alicdn.com/imgextra/i2/O1CN01B5ooiu24nHSA8ebyj_!!6000000007435-2-tps-1080-506.png)
+![image](./images/EAEC7383-4E3F-41A5-AE0B-AB43FBD6D5AE.png)
 
 使用预留实例可以完全避免冷启动，预留实例是在用户预留后就分配实例，准备执行环境；请求结束后系统也不会自动回收实例。
 
@@ -87,275 +97,98 @@ Request 2 执行结束后，等待一段时间，如果这段时间没有新的�
 
 <slide style="padding: 16px">
 
-## 云服务器如何上传文件
+##### 体验一下 website-react
 
-[安装 SecureCRT](https://www.jianshu.com/p/983f2f226579)
+```bash
+bogon:a shihuali$ s init website-react
 
-rz 与 sz 命令
+🚀 Serverless Awesome: https://github.com/Serverless-Devs/package-awesome
 
-安装
+? Please input your project name (init dir) website-react
+✔ file decompression completed
+? Do you want to install dependencies? No
+? please input alibaba oss bucket: website-react-bucket
+? please select credential alias default
 
+🏄‍ Thanks for using Serverless-Devs
+👉 You could [cd /Users/shihuali/workspace/a/website-react] and enjoy your serverless journey!
+🧭️ If you need help for this example, you can use [s -h] after you enter folder.
+💞 Document ❤ Star：https://github.com/Serverless-Devs/Serverless-Devs
+
+# s deploy success output
+domainName: http://website-react-bucket.oss.devsapp.net
+website-starter:
+  Region: cn-hangzhou
+  Bucket: website-react-bucket
+  Domains:
+    - website-react-bucket.oss.devsapp.net
 ```
-yum install lrzsz -y
-```
 
-rz 命令（Receive ZMODEM），使用 ZMODEM 协议，将本地文件批量上传到远程 Linux/Unix 服务器，注意不能上传文件夹。
-当我们使用虚拟终端软件，如 Xshell、SecureCRT 或 PuTTY 来连接远程服务器后，使用 rz 命令可以上传本地文件到远程服务器。输入 rz 回车后，会出现文件选择对话框，选择需要上传文件，一次可以指定多个文件，上传到服务器的路径为当前执行 rz 命令的目录。
-
-sz 命令（Send ZMODEM）通过 ZMODEM 协议，可将多个文件从远程服务器下载到本地。注意不能下载文件夹，如果下载文件夹，请先打包再下载
+- s init website-react, 对于这个下载动作其实是调用了 core 提供的 loadApplocation 方法
 
 <slide style="padding: 16px">
 
-## 部署 node 环境
+##### Yaml 规范
 
-rz 上传 node 包
-解压 node 包
-
-```
-tar -xvf node-v14.15.5-linux-x64.tar.xz
-```
-
-将文件移动到 /usr/local 目录下
-
-```
-mv node-v14.15.5-linux-x64 /usr/local/node
-```
-
-检验 node 是否安装成功
-
-```
-node -v
-```
-
-软连接
-
-```
-ln -s /usr/local/node/bin/node /usr/local/bin
-ln -s /usr/local/node/bin/npm /usr/local/bin
-```
-
-再次执行 node -v 就可以看到版本号了
-
-<slide style="padding: 16px">
-
-## 安装 cnpm
-
-```
-npm install -g cnpm --registry=https://registry.npm.taobao.org
-```
-
-后续安装的包，添加软链接同 node
-
-<slide style="padding: 16px">
-
-[express](https://www.expressjs.com.cn/starter/hello-world.html)
-
-pm2 是一个进程管理工具,可以用它来管理你的 node 进程，并查看 node 进程的状态，当然也支持性能监控，进程守护，负载均衡等功能
-
-```
- npm install pm2 -g
-```
-
-启动进程/应用
-
-```
- pm2 start helloworld.js
-```
-
-列出所有进程/应用
-
-```
- pm2 list
-```
-
-删除进程/应用
-
-```
- pm2 delete id
+```yaml
+edition: 1.0.0 #  命令行YAML规范版本，遵循语义化版本（Semantic Versioning）规范
+name: FullStack #  项目名称
+access: xxx-account1 #  秘钥别名
+vars: # [全局变量，提供给各个服务使用]
+  logo: https://image.aliyun.com/xxxx.png
+  domain: xxxx.yyy.com
+services:
+  nextjs-portal: #  服务名称
+    access: xxx-account1 #  秘钥别名，如果和项目的access相同，可省略
+    component: vue-component # 组件名称
+    props: #  组件的属性值
+      src: ./frontend_src
+      url: url
+    actions: # 自定义执行逻辑
+      pre-deploy: # 在deploy之前运行
+        - run: s exec -- publish # 要运行的命令行
+          path: ./backend_src # 命令行运行的路径
+        - plugin: plugin-name # 要运行的plugin名称
+      post-deploy: # 在deploy之后运行
+        - run: s clean
+          path: ./frontend_src
+  express-blog:
+    component: express
+    props:
+      app: ./express-blog
+      url: ${vars.domain}
+    actions:
+      pre-deploy:
+        - run: npm run build
+          path: ./express-blog
 ```
 
 <slide style="padding: 16px">
 
-## mongodb
+Yaml 支持的多种变量格式如下：
 
-```
-数据库（database）
-集合（collection）
-文档（document）
-在MongoDB中，数据库和集合都不需要手动创建，当我们创建文档时，如果文档所在的数据库或集合不存在，会自动创建数据库和集合
-基本指令
-show dbs(databases): 显示当前的所以数据库
-use 数据库名称：进入到指定的数据库当中
-db：表示的是当前所处的数据库
-show collections：显示数据库中所有的集合
-db.dropDatabase()：输出数据库
-db.<collection>.drop(): 删除集合
-数据库的CRUD（增删改查）的操作
-create: db.<collection>.insert(doc)
-read: db.<collection>.find()
-update: db.<collection>.update():
-delete: db.<collection>.remove():
-```
+- <div>获取当前机器中的环境变量：${env(环境变量)}，例如${env(secretId)}</div>
+- <div>获取全局变量：${vars.*}</div>
+- <div>获取其他项目的变量：${projectName.props.*}</div>
+- <div>获取 Yaml 中其他项目的结果变量：${projectName.output.*}</div>
 
-[下载资源](https://www.mongodb.com/try/download/community), 注意查看服务器的操作系统，请确保下载正确的版本
+当然，如果一个 Yaml 中有过多的项目，系统也会默认分析部署顺序：
+
+- 分析项目中的依赖关系
+- 有依赖关系的按照依赖关系从前到后部署，无依赖关系的按 Yaml 配置的从上到下部署
 
 <slide style="padding: 16px">
 
-解压
+##### core 的更新机制
 
-```
-tar -zxvf mongodb-linux-x86_64-rhel80-4.4.4.tgz
-```
-
-将解压后的文件夹移动至指定目录
-
-```
-mv mongodb-linux-x86_64-rhel80-4.4.4 /usr/local/mongodb
-```
-
-创建数据文件夹、日志文件和 mongo 配置文件
-
-```
-mkdir -p  /usr/local/mongodb/data
-touch /usr/local/mongodb/mongod.log
-touch /usr/local/mongodb/mongodb.conf
-```
-
-修改配置文件
-
-```
-vim /usr/local/mongodb/mongodb.conf
-```
+![image](./images/yuque_diagram.jpeg)
 
 <slide style="padding: 16px">
 
-在配置文件中加入如下代码：
+##### 组件的加载机制
 
-```
-dbpath=/usr/local/mongodb/data
-logpath=/usr/local/mongodb/mongod.log
-logappend = true
-bind_ip = 0.0.0.0
-port = 27017
-fork = true
-```
-
-进入到安装目录下
-
-```
-cd /usr/local/mongodb/bin
-```
-
-启动
-
-```
-./mongod --config /usr/local/mongodb/mongodb.conf
-```
-
-关闭
-
-```
-./mongod -shutdown -dbpath=/usr/local/mongodb/data
-```
+![image](./images/yuque_diagram1.jpeg)
 
 <slide style="padding: 16px">
 
-软连接
-
-```
-ln -s /usr/local/mongodb/bin/mongo /usr/local/bin
-```
-
-查看 mongo 进程 第二列就是进程 id
-
-```
-ps -ef|grep mongo
-```
-
-结束进程
-
-```
-kill id
-```
-
-<slide style="padding: 16px">
-
-## egg 部署
-
-将本地文件除了 node_modules 进行压缩，并命名为 dist.zip
-
-将文件上传到云服务器
-
-解压文件
-
-```
-unzip dist.zip
-```
-
-安装依赖
-
-```
-npm install --production
-```
-
-启动
-
-```
-npm start
-```
-
-<slide style="padding: 16px">
-
-查看当前端口是否占用
-
-```
-lsof -i tcp:7001
-
-```
-
-结束进程
-
-```
-kill pid
-```
-
-这时候访问 公网 ip + 7001 就可以了
-
-<slide style="padding: 16px">
-
-Nginx 配置
-
-```
-location / {
-  proxy_set_header Upgrade $http_upgrade;
-  proxy_set_header Connection "upgrade";
-  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header Host $host;
-  proxy_pass   http://127.0.0.1:7001;
-
-  # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_bind
-  # proxy_bind       $remote_addr transparent;
-}
-```
-
-这时候访问 公网 ip 就可以了
-
-<slide class="bg-black-blue aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/">
-
-## THANK YOU
-
-<div style="display: flex;justify-content: center;">
-  <div>
-    <h3>静态网站</h3>
-    <div style="margin-top: 16px;">[demo 演示](https://shihuali.tk){.button.delay-1s.animated.fadeInUp}</div>
-    <div style="margin-top: 32px;">[:fa-cloud-download: Github](https://github.com/xsahxl/blog){.button.delay-1s.animated.fadeInUp}
-    </div>
-  </div>
-
-  <div style="margin-left: 56px;">
-    <h3>动态网站</h3>
-    <div style="margin-top: 16px;">[demo 演示](http://121.43.142.25/){.button.delay-2s.animated.fadeInUp}</div>
-    <div style="margin-top: 32px;">[:fa-cloud-download: Github](https://github.com/learn-one-app){.button.animated.delay-2s.fadeInUp}
-    </div>
-  </div>
-</div>
+# 感谢，已完结

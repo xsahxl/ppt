@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xsahxl/blog-ppt.git"
+    "url": "git+https://github.com/xsahxl/ppt.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/xsahxl/blog-ppt/issues"
+    "url": "https://github.com/xsahxl/ppt/issues"
   },
-  "homepage": "https://github.com/xsahxl/blog-ppt#readme",
+  "homepage": "https://github.com/xsahxl/ppt#readme",
   "dependencies": {
     "nodeppt": "^2.2.2"
   }
