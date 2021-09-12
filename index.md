@@ -1,14 +1,399 @@
-title: Serverless 入门
+title: 如何搭建自己的个人网站
 speaker: 史华力
 url: https://github.com/xsahxl/ppt
 
 <slide  class="bg-black-blue aligncenter" image="https://cn.bing.com/az/hprichbg/rb/RainierDawn_EN-AU3730494945_1920x1080.jpg .dark">
 
-# Serverless 入门
+# 如何搭建自己的个人网站
+
+<div class="alignright" style="padding-right: 50px;">传统方式 和 serverless</div>
 
 <div style="margin-top: 32px;">[:fa-github: Github](https://github.com/xsahxl/ppt){.button.ghost.animated.flipInX.delay-500}</div>
 
-### <div style="margin-top: 100px;text-align: right;">分享人：史华力</div>
+<div class="alignright" style="margin-top: 100px;padding-right: 50px;">分享人：史华力</div>
+
+<slide style="padding: 16px">
+
+# 传统方式
+
+#### 静态 ui 选型
+
+- [hexo](https://hexo.io/zh-cn/)
+- [vuepress](https://vuepress.vuejs.org/zh/)
+- [dumi](https://d.umijs.org/zh-CN)
+
+#### 部署
+
+- [GitHub Pages](https://pages.github.com/)
+- [云服务器](https://ecs.console.aliyun.com/)
+
+##### <div style="margin-top:32px;">静态网站搭建 以 dumi 和 GitHub Pages 为例子进行演示</div>
+
+##### <div style="margin-top:32px;">动态网站搭建 以 react+axios 和 egg+mongodb 为例子进行演示</div>
+
+<slide  image="https://webslides.tv/static/images/iphone-hand.png .right-bottom">
+
+## [dumi](https://d.umijs.org/)
+
+环境准备
+
+首先得有 node，并确保 node 版本是 10.13 或以上。
+
+```
+node -v
+```
+
+仓库模板初始化
+
+我们也可以使用 dumi-template 仓库进行初始化，访问 [dumi-template ](https://github.com/umijs/dumi-template) 了解更多。
+
+<slide style="padding: 16px">
+
+## [GitHub Pages](https://pages.github.com/)
+
+Head over to GitHub and create a new public repository named username.github.io, where username is your username (or organization name) on GitHub.
+
+部署
+
+1.在 `.umirc.ts` 中设置正确的 `base`。
+
+如果你打算发布到 `https://<USERNAME>.github.io/`，则可以省略这一步，因为 `base` 和 `publicPath` 默认即是 `"/"`。
+
+如果你打算发布到 `https://<USERNAME>.github.io/<REPO>/`（也就是说你的仓库在 `https://github.com/<USERNAME>/<REPO>`），则将 `base` 和 `publicPath` 设置为 `"/<REPO>/"`。
+
+<slide style="padding: 16px">
+
+2.在你的项目中，创建一个如下的 `deploy.sh` 文件（请自行判断去掉高亮行的注释）:
+
+```shell {.animated.fadeInUp}
+#!/usr/bin/env sh
+
+# 确保脚本抛出遇到的错误
+set -e
+
+# 生成静态文件
+npm run build
+
+# 进入生成的文件夹
+cd docs-dist
+
+# 如果是发布到自定义域名
+# echo 'www.example.com' > CNAME
+
+git init
+git add -A
+git commit -m 'deploy'
+
+# 如果发布到 https://<USERNAME>.github.io
+# git push -f git@github.com:xsahxl/xsahxl.github.io.git master
+
+# 如果发布到 https://<USERNAME>.github.io/<REPO>
+git push -f git@github.com:xsahxl/blog.git master:gh-pages
+
+cd -
+```
+
+<slide style="padding: 16px">
+
+## nignx
+
+安装
+
+```
+yum install nginx -y
+```
+
+启动 nginx
+
+```
+nginx
+```
+
+阿里云 ecs 服务器的默认开放端口没有 80,记得在安全组里添加下，然后 访问公网 ip 应该会看到 nginx 启动成功了，显然这时候也可以部署我们的静态博客了。
+
+<slide style="padding: 16px">
+
+## 云服务器如何上传文件
+
+[安装 SecureCRT](https://www.jianshu.com/p/983f2f226579)
+
+rz 与 sz 命令
+
+安装
+
+```
+yum install lrzsz -y
+```
+
+rz 命令（Receive ZMODEM），使用 ZMODEM 协议，将本地文件批量上传到远程 Linux/Unix 服务器，注意不能上传文件夹。
+当我们使用虚拟终端软件，如 Xshell、SecureCRT 或 PuTTY 来连接远程服务器后，使用 rz 命令可以上传本地文件到远程服务器。输入 rz 回车后，会出现文件选择对话框，选择需要上传文件，一次可以指定多个文件，上传到服务器的路径为当前执行 rz 命令的目录。
+
+sz 命令（Send ZMODEM）通过 ZMODEM 协议，可将多个文件从远程服务器下载到本地。注意不能下载文件夹，如果下载文件夹，请先打包再下载
+
+<slide style="padding: 16px">
+
+## 部署 node 环境
+
+rz 上传 node 包
+解压 node 包
+
+```
+tar -xvf node-v14.15.5-linux-x64.tar.xz
+```
+
+将文件移动到 /usr/local 目录下
+
+```
+mv node-v14.15.5-linux-x64 /usr/local/node
+```
+
+检验 node 是否安装成功
+
+```
+node -v
+```
+
+软连接
+
+```
+ln -s /usr/local/node/bin/node /usr/local/bin
+ln -s /usr/local/node/bin/npm /usr/local/bin
+```
+
+再次执行 node -v 就可以看到版本号了
+
+<slide style="padding: 16px">
+
+## 安装 cnpm
+
+```
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
+
+后续安装的包，添加软链接同 node
+
+<slide style="padding: 16px">
+
+[express](https://www.expressjs.com.cn/starter/hello-world.html)
+
+pm2 是一个进程管理工具,可以用它来管理你的 node 进程，并查看 node 进程的状态，当然也支持性能监控，进程守护，负载均衡等功能
+
+```
+ npm install pm2 -g
+```
+
+启动进程/应用
+
+```
+ pm2 start helloworld.js
+```
+
+列出所有进程/应用
+
+```
+ pm2 list
+```
+
+删除进程/应用
+
+```
+ pm2 delete id
+```
+
+<slide style="padding: 16px">
+
+## mongodb
+
+```
+数据库（database）
+集合（collection）
+文档（document）
+在MongoDB中，数据库和集合都不需要手动创建，当我们创建文档时，如果文档所在的数据库或集合不存在，会自动创建数据库和集合
+基本指令
+show dbs(databases): 显示当前的所以数据库
+use 数据库名称：进入到指定的数据库当中
+db：表示的是当前所处的数据库
+show collections：显示数据库中所有的集合
+db.dropDatabase()：输出数据库
+db.<collection>.drop(): 删除集合
+数据库的CRUD（增删改查）的操作
+create: db.<collection>.insert(doc)
+read: db.<collection>.find()
+update: db.<collection>.update():
+delete: db.<collection>.remove():
+```
+
+[下载资源](https://www.mongodb.com/try/download/community), 注意查看服务器的操作系统，请确保下载正确的版本
+
+<slide style="padding: 16px">
+
+解压
+
+```
+tar -zxvf mongodb-linux-x86_64-rhel80-4.4.4.tgz
+```
+
+将解压后的文件夹移动至指定目录
+
+```
+mv mongodb-linux-x86_64-rhel80-4.4.4 /usr/local/mongodb
+```
+
+创建数据文件夹、日志文件和 mongo 配置文件
+
+```
+mkdir -p  /usr/local/mongodb/data
+touch /usr/local/mongodb/mongod.log
+touch /usr/local/mongodb/mongodb.conf
+```
+
+修改配置文件
+
+```
+vim /usr/local/mongodb/mongodb.conf
+```
+
+<slide style="padding: 16px">
+
+在配置文件中加入如下代码：
+
+```
+dbpath=/usr/local/mongodb/data
+logpath=/usr/local/mongodb/mongod.log
+logappend = true
+bind_ip = 0.0.0.0
+port = 27017
+fork = true
+```
+
+进入到安装目录下
+
+```
+cd /usr/local/mongodb/bin
+```
+
+启动
+
+```
+./mongod --config /usr/local/mongodb/mongodb.conf
+```
+
+关闭
+
+```
+./mongod -shutdown -dbpath=/usr/local/mongodb/data
+```
+
+<slide style="padding: 16px">
+
+软连接
+
+```
+ln -s /usr/local/mongodb/bin/mongo /usr/local/bin
+```
+
+查看 mongo 进程 第二列就是进程 id
+
+```
+ps -ef|grep mongo
+```
+
+结束进程
+
+```
+kill id
+```
+
+<slide style="padding: 16px">
+
+## egg 部署
+
+将本地文件除了 node_modules 进行压缩，并命名为 dist.zip
+
+将文件上传到云服务器
+
+解压文件
+
+```
+unzip dist.zip
+```
+
+安装依赖
+
+```
+npm install --production
+```
+
+启动
+
+```
+npm start
+```
+
+<slide style="padding: 16px">
+
+查看当前端口是否占用
+
+```
+lsof -i tcp:7001
+
+```
+
+结束进程
+
+```
+kill pid
+```
+
+这时候访问 公网 ip + 7001 就可以了
+
+<slide style="padding: 16px">
+
+Nginx 配置
+
+```
+location / {
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "upgrade";
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header Host $host;
+  proxy_pass   http://127.0.0.1:7001;
+
+  # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_bind
+  # proxy_bind       $remote_addr transparent;
+}
+```
+
+这时候访问 公网 ip 就可以了
+
+<slide style="padding: 16px;">
+
+# serverless 如何部署静态网站呢？
+
+- 根路径下添加 s.yaml 文件
+
+```yaml
+edition: 1.0.0
+access: default
+
+services:
+  website-starter:
+    component: devsapp/website
+    actions:
+      pre-deploy:
+        - run: npm run build
+          path: ./
+    props:
+      bucket: shl-blog
+      src:
+        publishDir: ./docs-dist
+        index: index.html
+      region: cn-hangzhou
+      hosts:
+        - host: blog.shihuali.top
+```
+
+- s deploy
 
 <slide style="padding: 16px;">
 
@@ -189,6 +574,43 @@ Yaml 支持的多种变量格式如下：
 
 ![image](./images/yuque_diagram1.jpeg)
 
-<slide style="padding: 16px">
+<slide class="bg-black-blue aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/">
 
-# 感谢，已完结
+## THANK YOU
+
+<div style="display: flex;justify-content: center; margin-top: 16px;">
+  <div style="border: 1px dashed #eee; padding: 16px;">
+    <h5>传统方式</h5>
+    <div style="display: flex;justify-content: center;">
+      <div>
+        <h3>静态网站</h3>
+        <div style="margin-top: 16px;">[demo 演示](https://xsahxl.github.io){.button.delay-1s.animated.fadeInUp}</div>
+        <div style="margin-top: 32px;">[:fa-cloud-download: Github](https://github.com/xsahxl/xsahxl.github.io){.button.delay-1s.animated.fadeInUp}
+        </div>
+      </div>
+      <div style="margin-left: 56px;">
+        <h3>动态网站</h3>
+        <div style="margin-top: 16px;">[demo 演示](https://app.shihuali.top){.button.delay-2s.animated.fadeInUp}</div>
+        <div style="margin-top: 32px;">[:fa-cloud-download: Github](https://github.com/learn-one-app){.button.animated.delay-2s.fadeInUp}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-left: 56px;border: 1px dashed #eee; padding: 16px;">
+    <h5>serverless</h5>
+    <div style="display: flex;justify-content: center;">
+      <div>
+        <h3>静态网站</h3>
+        <div style="margin-top: 16px;">[demo 演示](https://blog.shihuali.top){.button.delay-3s.animated.fadeInUp}</div>
+        <div style="margin-top: 32px;">[:fa-cloud-download: Github](https://github.com/xsahxl/blog){.button.delay-3s.animated.fadeInUp}
+        </div>
+      </div>
+      <div style="margin-left: 56px;">
+        <h3>动态网站</h3>
+        <div style="margin-top: 16px;">[demo 演示](http://jamstack-react-project-87b63120f252eeb2d9b99bb406750fea.jamstack.devsapp.net){.button.delay-4s.animated.fadeInUp}</div>
+        <div style="margin-top: 32px;">[:fa-cloud-download: Github](https://github.com/learn-one-app){.button.animated.delay-4s.fadeInUp}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

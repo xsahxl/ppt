@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodeppt serve index.md",
+    "test": "nodeppt serve index01.md",
     "build": "nodeppt build index.md",
     "deploy": "bash deploy.sh"
   },
