@@ -567,43 +567,14 @@ Yaml 支持的多种变量格式如下：
 
 ![image](./images/yuque_diagram1.jpeg)
 
-<slide class="bg-black-blue aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/">
+<slide class="aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/">
 
 ## THANK YOU
 
-<div style="display: flex;justify-content: center; margin-top: 16px;">
-  <div style="border: 1px dashed #eee; padding: 16px;">
-    <h5>传统方式</h5>
-    <div style="display: flex;justify-content: center;">
-      <div>
-        <h3>静态网站</h3>
-        <div style="margin-top: 16px;">[demo 演示](https://xsahxl.github.io){.button.delay-1s.animated.fadeInUp}</div>
-        <div style="margin-top: 32px;">[:fa-cloud-download: Github](https://github.com/xsahxl/xsahxl.github.io){.button.delay-1s.animated.fadeInUp}
-        </div>
-      </div>
-      <div style="margin-left: 56px;">
-        <h3>动态网站</h3>
-        <div style="margin-top: 16px;">[demo 演示](https://app.shihuali.top){.button.delay-2s.animated.fadeInUp}</div>
-        <div style="margin-top: 32px;">[:fa-cloud-download: Github](https://github.com/learn-one-app){.button.animated.delay-2s.fadeInUp}
-        </div>
-      </div>
-    </div>
-  </div>
-  <div style="margin-left: 56px;border: 1px dashed #eee; padding: 16px;">
-    <h5>serverless</h5>
-    <div style="display: flex;justify-content: center;">
-      <div>
-        <h3>静态网站</h3>
-        <div style="margin-top: 16px;">[demo 演示](https://blog.shihuali.top){.button.delay-3s.animated.fadeInUp}</div>
-        <div style="margin-top: 32px;">[:fa-cloud-download: Github](https://github.com/xsahxl/blog){.button.delay-3s.animated.fadeInUp}
-        </div>
-      </div>
-      <div style="margin-left: 56px;">
-        <h3>动态网站</h3>
-        <div style="margin-top: 16px;">[demo 演示](http://jamstack-react-project-87b63120f252eeb2d9b99bb406750fea.jamstack.devsapp.net){.button.delay-4s.animated.fadeInUp}</div>
-        <div style="margin-top: 32px;">[:fa-cloud-download: Github](https://github.com/learn-one-app){.button.animated.delay-4s.fadeInUp}
-        </div>
-      </div>
-    </div>
-  </div>
+<div style="text-align: center;">
+  <div style="margin-top: 16px;">[github pages demo](https://xsahxl.github.io)</div>
+  <div style="margin-top: 16px;">[服务器 静态 demo](http://121.43.142.25/)</div>
+  <div style="margin-top: 16px;">[服务器 动态 demo](https://app.shihuali.top)</div>
+  <div style="margin-top: 16px;">[serverless 静态 demo](https://blog.shihuali.top)</div>
+  <div style="margin-top: 16px;">[serverless 动态 demo](http://jamstack-react-project-87b63120f252eeb2d9b99bb406750fea.jamstack.devsapp.net)</div>
 </div>
