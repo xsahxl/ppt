@@ -6,7 +6,9 @@ url: https://github.com/xsahxl/ppt
 
 # 如何搭建自己的个人网站
 
-<div class="alignright" style="padding-right: 50px;">传统方式 和 serverless</div>
+- [GitHub Pages](https://pages.github.com/)
+- [阿里云服务器](https://ecs.console.aliyun.com/)
+- [Serverless](https://www.serverless-devs.com/)
 
 <div style="margin-top: 32px;">[:fa-github: Github](https://github.com/xsahxl/ppt){.button.ghost.animated.flipInX.delay-500}</div>
 
@@ -14,24 +16,11 @@ url: https://github.com/xsahxl/ppt
 
 <slide style="padding: 16px">
 
-# 传统方式
+## 静态 ui 选型
 
-#### 静态 ui 选型
-
-- [hexo](https://hexo.io/zh-cn/)
 - [vuepress](https://vuepress.vuejs.org/zh/)
 - [dumi](https://d.umijs.org/zh-CN)
-
-#### 部署
-
-- [GitHub Pages](https://pages.github.com/)
-- [云服务器](https://ecs.console.aliyun.com/)
-
-##### <div style="margin-top:32px;">静态网站搭建 以 dumi 和 GitHub Pages 为例子进行演示</div>
-
-##### <div style="margin-top:32px;">动态网站搭建 以 react+axios 和 egg+mongodb 为例子进行演示</div>
-
-<slide  image="https://webslides.tv/static/images/iphone-hand.png .right-bottom">
+- [hexo](https://hexo.io/zh-cn/)
 
 ## [dumi](https://d.umijs.org/)
 
@@ -94,6 +83,10 @@ cd -
 ```
 
 <slide style="padding: 16px">
+
+## 购买服务器
+
+[阿里云服务器](https://ecs.console.aliyun.com/) ：如果第一次使用阿里云服务器的话，可以先申请 [免费试用的云服务器](https://free.aliyun.com/)
 
 ## nignx
 
